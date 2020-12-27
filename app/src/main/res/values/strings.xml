@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">AppTodoPlanning</string>
+    <string name="app_name">TIME TO PLAN</string>
+    <string name="txt_mi_add" />
+    <string name="txt_mi_search" />
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="logo_time_to_plan">Logo Time to plan</string>
 </resources>
