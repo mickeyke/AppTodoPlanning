@@ -5,14 +5,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
+
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
 
 public class MainActivity extends AppCompatActivity {
 
+    private NavController mNavControler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mNavControler = Navigation.findNavController(this, R.id.nav_host);
+
     }
 
     //create obtion menu
@@ -20,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);//resource omzetten naar scherm
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -32,5 +41,18 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void goToPageView(View v) {
+        switch(v.getId()) {
+            case R.id.im_icon_calendar:
+                //Toast.makeText(this,"Pressed calendar", Toast.LENGTH_LONG).show();
+                mNavControler.navigate(R.id.go_to_calendarFragment);
+                break;
+            case R.id.im_icon_listIcon:
+               // Toast.makeText(this,"Pressed list view", Toast.LENGTH_LONG).show();
+                mNavControler.navigate(R.id.go_to_listFragment);
+                break;
+        }
     }
 }

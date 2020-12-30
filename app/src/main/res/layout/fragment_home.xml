@@ -1,16 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#437085"
-    tools:context=".fragments.HomeFragment" >
+    android:layout_centerInParent="true"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:addStatesFromChildren="false"
+    android:alwaysDrawnWithCache="false"
+    android:background="@color/ic_launcher_background"
+    android:clickable="false"
+    android:focusableInTouchMode="false"
+    tools:context=".fragments.HomeFragment">
 
     <ImageView
-        android:id="@+id/imageViewLogo"
+        android:id="@+id/im_backgroundIcon"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="421dp"
         android:contentDescription="@string/logo_time_to_plan"
-        android:src="@mipmap/ic_launcher_icon_foreground" />
-</FrameLayout>
+        android:src="@mipmap/ic_launcher_foreground" />
+
+    <ImageView
+        android:id="@+id/im_icon_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:contentDescription="@string/txt_calendar_icon"
+        android:minWidth="60dp"
+        android:minHeight="60dp"
+        android:src="@drawable/ic_action_calendar"
+        android:translationX="60dp"
+        android:translationY="280dp"
+        android:onClick="goToPageView"
+        tools:ignore="OnClick" />
+
+    <ImageView
+        android:id="@+id/im_icon_listIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/txt_list_icon"
+        android:minWidth="60dp"
+        android:minHeight="60dp"
+        android:src="@drawable/ic_action_cardlist"
+        android:translationX="150dp"
+        android:translationY="280dp"
+        android:onClick="goToPageView"
+        tools:ignore="OnClick" />
+
+</RelativeLayout>
