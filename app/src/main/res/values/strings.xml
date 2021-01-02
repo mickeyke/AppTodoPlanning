@@ -9,4 +9,5 @@
     <string name="txt_list_icon">list icon</string>
     <string name="txt_home">Home</string>
     <string name="txt_settings">settings</string>
+    <string name="txt_bt_details">details</string>
 </resources>
