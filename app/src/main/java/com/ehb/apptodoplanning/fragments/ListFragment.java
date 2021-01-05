@@ -15,6 +15,7 @@ import com.ehb.apptodoplanning.model.Todo;
 import com.ehb.apptodoplanning.model.TodoViewModel;
 import com.ehb.apptodoplanning.util.TodoAdapter;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class ListFragment extends Fragment {
@@ -45,14 +46,18 @@ public class ListFragment extends Fragment {
        rvTodos.setAdapter( todoAdapter );
         TodoViewModel model = ViewModelProviders.of(this).get( TodoViewModel.class );
 
-       model.getTasks().observeForever( new Observer<ArrayList<Todo>>() {
-           @Override
-           public void onChanged(ArrayList<Todo> todos) {
-               todoAdapter.addTodos( todos );
-           }
-       });
+        try {
+            model.getTasks().observeForever( new Observer<ArrayList<Todo>>() {
+                @Override
+                public void onChanged(ArrayList<Todo> todos) {
+                    todoAdapter.addTodos( todos );
+                }
+            });
+        } catch (ParseException e) {
+            e.printStackTrace(); // dit is er bij gekomen na dat er iin de constructor een parseExeption is toegevoegd
+        }
 
-       RecyclerView.LayoutManager manager = new LinearLayoutManager( getContext(),RecyclerView.VERTICAL,false );
+        RecyclerView.LayoutManager manager = new LinearLayoutManager( getContext(),RecyclerView.VERTICAL,false );
        rvTodos.setLayoutManager( manager );
         return rootView;
     }
