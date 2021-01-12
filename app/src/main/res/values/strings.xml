@@ -11,4 +11,5 @@
     <string name="txt_settings">settings</string>
     <string name="txt_bt_details">details</string>
     <string name="no_note">Geen todo</string>
+    <string name="startDate">Start date</string>
 </resources>

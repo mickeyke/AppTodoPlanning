@@ -14,7 +14,7 @@ public class Todo implements Serializable {
         this.description = description;
         this.createdBy = createdBy;
         //string omzetten naar datum
-        this.startDate = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
+        this.startDate = new SimpleDateFormat("dd-MM-yyyy").parse(startDate);
         this.endDate = new SimpleDateFormat("dd-MM-yyyy").parse(endDate);
         this.dateCreated = new SimpleDateFormat("dd-MM-yyyy").parse(dateCreated);
     }

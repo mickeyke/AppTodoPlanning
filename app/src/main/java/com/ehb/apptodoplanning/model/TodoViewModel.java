@@ -17,8 +17,8 @@ public class TodoViewModel extends ViewModel {
         if(todos == null){
             todos = new MutableLiveData<>();
             ArrayList<Todo> tempTodos = new ArrayList<>();
-            tempTodos.add(new Todo("Aanmaken Project","hier gaan we een project aamken voor andriod development","Michael Carels","2021-01-01","10-1-2021","28-12-2020"));
-            tempTodos.add(new Todo("list opmaken","lijst maken van alle notties","Waldo","2021-01-03","15-01-2021","01-01-2021"));
+            tempTodos.add(new Todo("Aanmaken Project","hier gaan we een project aamken voor andriod development","Michael Carels","1-1-2021","10-1-2021","28-12-2020"));
+            tempTodos.add(new Todo("list opmaken","lijst maken van alle notties","Waldo","03-01-2021","15-01-2021","01-01-2021"));
 
             todos.setValue(tempTodos);
         }
