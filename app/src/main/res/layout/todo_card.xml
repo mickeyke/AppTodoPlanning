@@ -29,16 +29,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="hier komt title" />
 
-        <Button
-            android:id="@+id/card_bt_details"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/txt_bt_details"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_tx_description" />
-
         <CheckBox
             android:id="@+id/checkBox"
             android:layout_width="wrap_content"
@@ -55,13 +45,31 @@
             android:id="@+id/card_tx_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/card_tx_title"
             app:layout_constraintTop_toBottomOf="@+id/card_tx_title"
             tools:text="hier komt de beschrijving van de todo , een hele korte beschrijving " />
+
+        <ImageButton
+            android:id="@+id/bt_moreInfo"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="10dp"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/txt_moreInfo"
+            android:hapticFeedbackEnabled="false"
+            android:rotation="90"
+            android:scaleType="fitXY"
+            android:tint="#08BD00"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card_tx_description"
+            app:srcCompat="@drawable/ic_3dots" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

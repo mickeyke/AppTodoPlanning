@@ -19,7 +19,11 @@ import com.ehb.apptodoplanning.model.TodoViewModel;
 import com.ehb.apptodoplanning.util.CalendarTodoAdapter;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class CalendarFragment extends Fragment {
 
@@ -27,7 +31,7 @@ public class CalendarFragment extends Fragment {
     TextView myDate;
     String date;
 
-    CalendarTodoAdapter calAdapter;
+   private  CalendarTodoAdapter calAdapter;
 
     /*private ArrayList<Todo> items;*/
 
@@ -50,7 +54,7 @@ public class CalendarFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
         //zoeken naar de id van de calander en text veld
         cal = (CalendarView) v.findViewById(R.id.viewCalendar );
-        myDate = (TextView) v.findViewById( R.id.getDateText );
+        //myDate = (TextView) v.findViewById( R.id.getDateText );
 
         //verwijzen naar de interface
         final RecyclerView rvCalTasks = v.findViewById( R.id.rv_calTodo );
@@ -60,6 +64,26 @@ public class CalendarFragment extends Fragment {
         rvCalTasks.setAdapter( calAdapter );
         //opvragen data -> view model
         final TodoViewModel model = ViewModelProviders.of(this).get( TodoViewModel.class );
+        /*kijken naar een array tasks en toon enkel degene die mogen gezien worden*/
+        try {
+            model.getTasks().observeForever( new Observer<ArrayList<Todo>>() {
+                @Override
+                public void onChanged(ArrayList<Todo> todos) {
+                    calAdapter.addTodos( todos );//dit zorgt er voor dat het alles laat zien dat er is
+
+                   //Filter de eerste view op get date today maar dit werkt niet
+                    //pas na het klikken komt er een items te zien.
+                    Date currentTime = Calendar.getInstance().getTime();
+                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                    String formattedDate = df.format(currentTime);
+
+                    calAdapter.getFilter().filter( formattedDate );
+                }
+            });
+        } catch (ParseException e) {
+            e.printStackTrace(); // dit is er bij gekomen na dat er iin de constructor een parseExeption is toegevoegd
+        }
+
 
         //wanneer datum veranderd door op te klikken
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -68,31 +92,15 @@ public class CalendarFragment extends Fragment {
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 int curentMonth = month + 1 ;
                 date = dayOfMonth+"-"+curentMonth+"-"+year;
-
-                    myDate.setText( dayOfMonth + "-" + curentMonth + "-" + year );
-                /*kijken naar een array tasks en toon enkel degene die mogen gezien worden*/
-                try {
-                    model.getTasks().observeForever( new Observer<ArrayList<Todo>>() {
-                        @Override
-                        public void onChanged(ArrayList<Todo> todos) {
-
-                            calAdapter.addTodos( todos );
-
-                            //TODO eens checken : https://camposha.info/android-custom-filter-search-listview-with-images-text-baseadapter/
-                           // calAdapter.filterOut( date );
-                        }
-                    });
-                } catch (ParseException e) {
-                    e.printStackTrace(); // dit is er bij gekomen na dat er iin de constructor een parseExeption is toegevoegd
-                }
-
-                //layout manager instellen voor te tonen goe je de card wilt te zien krijgen
-                RecyclerView.LayoutManager manager = new LinearLayoutManager( getContext(),RecyclerView.VERTICAL,false );
-                rvCalTasks.setLayoutManager( manager );
+              //  myDate.setText( dayOfMonth + "-" + curentMonth + "-" + year );
+                calAdapter.getFilter().filter( date );
+                //waarde terug gebruiken
             }
         });
 
-
+        //layout manager instellen voor te tonen goe je de card wilt te zien krijgen
+        RecyclerView.LayoutManager manager = new LinearLayoutManager( getContext(),RecyclerView.VERTICAL,false );
+        rvCalTasks.setLayoutManager( manager );
         // Inflate the layout for this fragment
         return v;
     }
