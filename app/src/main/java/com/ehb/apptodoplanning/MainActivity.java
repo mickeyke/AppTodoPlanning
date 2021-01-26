@@ -1,17 +1,17 @@
 package com.ehb.apptodoplanning;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-public class MainActivity extends AppCompatActivity {
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
+public class MainActivity extends AppCompatActivity{
 
     private NavController mNavControler;
     @Override
@@ -19,9 +19,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mNavControler = Navigation.findNavController(this, R.id.nav_host);
-    }
+        AndroidThreeTen.init( this ); // was voor de database
 
-    //create obtion menu
+        //floating button over alle pagina
+        FloatingActionButton fab = findViewById( R.id.bt_addToList );
+        fab.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String label = mNavControler.getCurrentDestination().getLabel().toString();
+
+                if ("fragment_home".equals( label )) {
+                    mNavControler.navigate( R.id.action_homeFragment_to_addItemFragment );
+                } else if ("fragment_list".equals( label )) {
+                    mNavControler.navigate( R.id.action_listFragment_to_addItemFragment );
+                } else if ("fragment_calender".equals( label )) {
+                    mNavControler.navigate( R.id.action_calendarFragment_to_addItemFragment );
+                }
+            }
+        } );
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -30,27 +46,4 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.menu_add://uitvoeren als men op de add knop heeft geklikt , R. = resource
-                Toast.makeText(this,"Pressed add", Toast.LENGTH_LONG).show(); //Toast is een pop up scherm
-                //ga naar de insert naviagatie pagina, voor een nieuwe item.
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void goToPageView(View v) {
-        switch(v.getId()) {
-            case R.id.im_icon_calendar:
-                //Toast.makeText(this,"Pressed calendar", Toast.LENGTH_LONG).show();
-                mNavControler.navigate(R.id.go_to_calendarFragment);
-                break;
-            case R.id.im_icon_listIcon:
-               // Toast.makeText(this,"Pressed list view", Toast.LENGTH_LONG).show();
-                mNavControler.navigate(R.id.go_to_listFragment);
-                break;
-        }
-    }
 }

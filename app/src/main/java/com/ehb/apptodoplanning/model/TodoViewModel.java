@@ -1,29 +1,64 @@
 package com.ehb.apptodoplanning.model;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import com.ehb.apptodoplanning.model.entities.Todo;
 
 import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.List;
 
-public class TodoViewModel extends ViewModel {
-    private MutableLiveData<ArrayList<Todo>> todos;
+public class TodoViewModel extends AndroidViewModel {
+    private TodoDatabase mTodoDatabase; //verwijzing naar de database
+    private LiveData<List<Todo>> mTodos;
+    private final Application mApplication;
 
-    public TodoViewModel(){
+    public TodoViewModel(Application application) {
+        super(application);
+        mApplication = application;
+        mTodoDatabase = TodoDatabase.getInstance( application );
+        mTodos = mTodoDatabase.getTodoDAO().getAllTodo();
     }
 
     // dit komt later vanuit een database ... .
-    public MutableLiveData<ArrayList<Todo>> getTasks() throws ParseException {
-        if(todos == null){
-            todos = new MutableLiveData<>();
-            ArrayList<Todo> tempTodos = new ArrayList<>();
-            tempTodos.add(new Todo("Aanmaken Project","hier gaan we een project aamken voor andriod development","Michael Carels","1-1-2021","10-1-2021","28-12-2020"));
-            tempTodos.add(new Todo("Aanmaken Project","hier gaan we een project aamken voor andriod development","Michael Carels","1-1-2021","10-1-2021","28-12-2020"));
-            tempTodos.add(new Todo("list opmaken","lijst maken van alle notties","Waldo","03-01-2021","15-01-2021","01-01-2021"));
-            tempTodos.add(new Todo("Nieuwe item toevoegen","het toevoegen van nieuwe todo aan de applicatie","Michael","13-01-2021","17-01-2021","13-01-2021"));
-            todos.setValue(tempTodos);
+    public LiveData<List<Todo>> getTasks() throws ParseException {
+             //return mTodoDatabase.getTodoDAO().getAllTodo() ;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mApplication);
+        String chosen = prefs.getString("pref_order", "Alfabetical");
+        switch (chosen){
+            case "Alfabetical": mTodos = mTodoDatabase.getTodoDAO().getAllTodo();
+                break;
+            case "Chronological": mTodos = mTodoDatabase.getTodoDAO().getAllNotesChronological();
+                break;
         }
-        return todos;
+
+        return mTodos;
     }
 
+    public void insertTodo(Todo t){
+        TodoDatabase.databaseExecutor.execute(()->{
+            mTodoDatabase.getTodoDAO().insertTodo(t);
+        });
+    }
+
+    public void updateTodo(Todo t){
+        TodoDatabase.databaseExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mTodoDatabase.getTodoDAO().updateTodo(t);
+            }
+        });
+    }
+
+    public void deleteTodo(Todo t){
+        TodoDatabase.databaseExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mTodoDatabase.getTodoDAO().deleteTodo(t);
+            }
+        });
+    }
 }

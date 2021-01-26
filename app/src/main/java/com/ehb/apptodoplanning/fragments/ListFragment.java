@@ -10,17 +10,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.navigation.NavController;
+
 import com.ehb.apptodoplanning.R;
-import com.ehb.apptodoplanning.model.Todo;
 import com.ehb.apptodoplanning.model.TodoViewModel;
+import com.ehb.apptodoplanning.model.entities.Todo;
 import com.ehb.apptodoplanning.util.TodoAdapter;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListFragment extends Fragment {
 
     TodoAdapter todoAdapter;
+    private NavController mNavControler;
 
     public ListFragment() {
         // Required empty public constructor
@@ -42,15 +46,15 @@ public class ListFragment extends Fragment {
        View rootView = inflater.inflate( R.layout.fragment_list, container, false );
 
        final RecyclerView rvTodos = rootView.findViewById( R.id.rv_todo );
-       todoAdapter = new TodoAdapter();
+       todoAdapter = new TodoAdapter(getActivity());
        rvTodos.setAdapter( todoAdapter );
         TodoViewModel model = ViewModelProviders.of(this).get( TodoViewModel.class );
 
         try {
-            model.getTasks().observeForever( new Observer<ArrayList<Todo>>() {
+            model.getTasks().observeForever( new Observer<List<Todo>>() {
                 @Override
-                public void onChanged(ArrayList<Todo> todos) {
-                    todoAdapter.addTodos( todos );
+                public void onChanged(List<Todo> todos) {
+                    todoAdapter.addTodos( (ArrayList<Todo>) todos );
                 }
             });
         } catch (ParseException e) {
@@ -59,6 +63,8 @@ public class ListFragment extends Fragment {
 
         RecyclerView.LayoutManager manager = new LinearLayoutManager( getContext(),RecyclerView.VERTICAL,false );
        rvTodos.setLayoutManager( manager );
+
         return rootView;
     }
+
 }

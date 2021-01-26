@@ -30,9 +30,9 @@
         android:minHeight="60dp"
         android:src="@drawable/ic_action_calendar"
         android:translationX="60dp"
-        android:translationY="280dp"
-        android:onClick="goToPageView"
-        tools:ignore="OnClick" />
+        android:translationY="280dp"/>
+        /*android:onClick="goToPageView"
+        tools:ignore="OnClick" />*/
 
     <ImageView
         android:id="@+id/im_icon_listIcon"
@@ -43,8 +43,9 @@
         android:minHeight="60dp"
         android:src="@drawable/ic_action_cardlist"
         android:translationX="150dp"
-        android:translationY="280dp"
+        android:translationY="280dp"/>
+    /*
         android:onClick="goToPageView"
-        tools:ignore="OnClick" />
+        tools:ignore="OnClick" />*/
 
 </RelativeLayout>

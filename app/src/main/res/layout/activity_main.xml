@@ -18,4 +18,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/main_nav" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/bt_addToList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="25dp"
+        android:clickable="false"
+        android:contentDescription="@string/txt_mi_add"
+        android:focusable="auto"
+        android:onClick="goToPageView"
+        tools:ignore="OnClick"
+        android:src="@android:drawable/ic_menu_add"
+        app:backgroundTint="#4CAF50"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

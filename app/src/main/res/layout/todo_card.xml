@@ -16,7 +16,7 @@
         <TextView
             android:id="@+id/card_tx_title"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="23dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="20dp"
@@ -53,13 +53,34 @@
             app:layout_constraintTop_toBottomOf="@+id/card_tx_title"
             tools:text="hier komt de beschrijving van de todo , een hele korte beschrijving " />
 
+        <TextView
+            android:id="@+id/card_tx_startdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@+id/card_tx_description"
+            app:layout_constraintTop_toBottomOf="@+id/card_tx_description"
+            tools:text="21-02-2021" />
+
+        <TextView
+            android:id="@+id/card_tx_enddate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toEndOf="@+id/card_tx_startdate"
+            app:layout_constraintTop_toBottomOf="@+id/card_tx_description"
+            tools:text="24-02-2021" />
+
         <ImageButton
-            android:id="@+id/bt_moreInfo"
+            android:id="@+id/bt_calmoreInfo"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="16dp"
             android:background="#00FFFFFF"
             android:contentDescription="@string/txt_moreInfo"
             android:hapticFeedbackEnabled="false"
@@ -67,9 +88,21 @@
             android:scaleType="fitXY"
             android:tint="#08BD00"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_tx_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bt_delete"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/ic_3dots" />
+
+        <Button
+            android:id="@+id/bt_delete"
+            android:layout_width="37dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@android:drawable/ic_delete"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

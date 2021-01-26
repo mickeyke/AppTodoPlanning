@@ -1,5 +1,6 @@
 package com.ehb.apptodoplanning.fragments;
 
+
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -14,8 +15,8 @@ import android.widget.CalendarView;
 import android.widget.TextView;
 
 import com.ehb.apptodoplanning.R;
-import com.ehb.apptodoplanning.model.Todo;
 import com.ehb.apptodoplanning.model.TodoViewModel;
+import com.ehb.apptodoplanning.model.entities.Todo;
 import com.ehb.apptodoplanning.util.CalendarTodoAdapter;
 
 import java.text.ParseException;
@@ -23,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class CalendarFragment extends Fragment {
@@ -30,8 +32,7 @@ public class CalendarFragment extends Fragment {
     CalendarView cal;
     TextView myDate;
     String date;
-
-   private  CalendarTodoAdapter calAdapter;
+    CalendarTodoAdapter calAdapter;
 
     /*private ArrayList<Todo> items;*/
 
@@ -43,11 +44,59 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
     }
 
-
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate( R.layout.fragment_calendar, container, false );
+
+        cal = (CalendarView) rootView.findViewById(R.id.viewCalendar );
+        //verwijzen naar de interface
+        final RecyclerView rvCalender = rootView.findViewById( R.id.rv_calTodo );
+
+        calAdapter = new CalendarTodoAdapter(getActivity());
+        rvCalender.setAdapter( calAdapter );
+        //kaart vullen
+        //data opvragen vanuit viewmodel
+        TodoViewModel modelCal =  ViewModelProviders.of(this).get( TodoViewModel.class );
+        try {
+            modelCal.getTasks().observeForever( new Observer<List<Todo>>() {
+                @Override
+                public void onChanged(List<Todo> todos) {
+                    calAdapter.addCalTodos( (ArrayList<Todo>) todos );
+
+                    Date currentTime = Calendar.getInstance().getTime();
+                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                    String formattedDate = df.format(currentTime);
+
+                    //calAdapter.getFilter().filter( formattedDate );
+                }
+            } );
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //wanneer datum veranderd door op te klikken
+        cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                int curentMonth = month + 1 ;
+                date = dayOfMonth+"-"+curentMonth+"-"+year;
+                //  myDate.setText( dayOfMonth + "-" + curentMonth + "-" + year );
+                calAdapter.getFilter().filter( date );
+                //waarde terug gebruiken
+            }
+        });
+
+        RecyclerView.LayoutManager manager = new LinearLayoutManager( getContext(),RecyclerView.VERTICAL,false );
+        rvCalender.setLayoutManager( manager );
+        return rootView;
+    }
+
+   /* @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //view aanmaken
@@ -60,20 +109,20 @@ public class CalendarFragment extends Fragment {
         final RecyclerView rvCalTasks = v.findViewById( R.id.rv_calTodo );
 
         //aanmaken addapter
-        calAdapter = new CalendarTodoAdapter();
-        rvCalTasks.setAdapter( calAdapter );
+         calAdapter = new CalendarTodoAdapter();
+            rvCalTasks.setAdapter( calAdapter );
         //opvragen data -> view model
-        final TodoViewModel model = ViewModelProviders.of(this).get( TodoViewModel.class );
-        /*kijken naar een array tasks en toon enkel degene die mogen gezien worden*/
+        TodoViewModel model = ViewModelProviders.of(this).get( TodoViewModel.class );
+        //*kijken naar een array tasks en toon enkel degene die mogen gezien worden
         try {
-            model.getTasks().observeForever( new Observer<ArrayList<Todo>>() {
+            model.getTasks().observeForever( new Observer<List<Todo>>() {
                 @Override
-                public void onChanged(ArrayList<Todo> todos) {
-                    calAdapter.addTodos( todos );//dit zorgt er voor dat het alles laat zien dat er is
+                public void onChanged(List<Todo> todos) {
+                   // calAdapter.addTodos((ArrayList<Todo>) todos );//dit zorgt er voor dat het alles laat zien dat er is
 
                    //Filter de eerste view op get date today maar dit werkt niet
                     //pas na het klikken komt er een items te zien.
-                    Date currentTime = Calendar.getInstance().getTime();
+                   /* Date currentTime = Calendar.getInstance().getTime();
                     SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
                     String formattedDate = df.format(currentTime);
 
@@ -104,4 +153,5 @@ public class CalendarFragment extends Fragment {
         // Inflate the layout for this fragment
         return v;
     }
+*/
 }

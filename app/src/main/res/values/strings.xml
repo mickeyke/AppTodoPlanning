@@ -13,4 +13,10 @@
     <string name="no_note">Geen todo</string>
     <string name="startDate">Start date</string>
     <string name="txt_moreInfo">More info</string>
+    <string name="txt_title">Title</string>
+    <string name="txt_description">Description</string>
+    <string name="txt_createdBy">Assignd to</string>
+    <string name="txt_startDate">Start date</string>
+    <string name="txt_endDate">End date</string>
+    <string name="txt_saveItem">Save</string>
 </resources>
