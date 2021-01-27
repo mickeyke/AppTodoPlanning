@@ -16,8 +16,8 @@ import com.ehb.apptodoplanning.model.entities.Todo;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CalendarTodoAdapter extends RecyclerView.Adapter<CalendarTodoAdapter.CalenderViewHolder> implements Filterable {
 
@@ -31,7 +31,7 @@ public class CalendarTodoAdapter extends RecyclerView.Adapter<CalendarTodoAdapte
 
     public void addCalTodos(ArrayList<Todo> todos) {
         tasks = todos;
-        //arrayListFiltered = tasks;
+        arrayListFiltered = todos;
         notifyDataSetChanged();
     }
 
@@ -73,7 +73,8 @@ public class CalendarTodoAdapter extends RecyclerView.Adapter<CalendarTodoAdapte
     public void onBindViewHolder(@NonNull CalenderViewHolder calenderHolder, int i) {
         //invullen met items
         //filter van de datum bij elke klik
-        Todo currentTasks = tasks.get( i );
+        //Todo currentTasks = tasks.get( i );
+        Todo currentTasks =  arrayListFiltered.get( i );
         calenderHolder.tvTitle.setText( currentTasks.getTitle() );
         calenderHolder.tvDescription.setText( currentTasks.getDescription() );
     }
@@ -82,49 +83,53 @@ public class CalendarTodoAdapter extends RecyclerView.Adapter<CalendarTodoAdapte
     public int getItemCount() {
         //hoeveel items moeten er zichtbaar zetten
         return tasks.size();
+        //return arrayListFiltered.size();
     }
 
     @Override
     public Filter getFilter() {
-        Filter filter = new Filter() {
+        return exampleFilter;
+    }
+    private Filter exampleFilter = new Filter() {
+
             @NotNull
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults results = new FilterResults();
-
-                ArrayList<Todo> arrayListFilter = new ArrayList<Todo>();
-                SimpleDateFormat formatDate = new SimpleDateFormat("d-M-yyyy");
-                if(constraint == null|| constraint.length() == 0) {
-                    results.count = tasks.size();
-                    results.values = tasks;
+                //Zoeken naar oplossing : filter werkt niet meer na 2de klik ???
+                List<Todo> filteredList = new ArrayList<>();
+                if (constraint == null || constraint.length() == 0) {
+                    filteredList.addAll(tasks);
                 } else {
-                    for (Todo itemModel : tasks) {
 
-                        String arrayDate = formatDate.format(itemModel.getStartDate());
-                        if(arrayDate.toLowerCase().contains(constraint.toString().toLowerCase())) {
-                            arrayListFilter.add(itemModel);
+                    String filterPattern = constraint.toString().toLowerCase().trim();
+
+                    for ( Todo item : tasks) {
+                        if (item.getStartDate().toLowerCase().contains(filterPattern)) {
+                            filteredList.add(item);
                         }
                     }
-                    results.count = arrayListFilter.size();
-                    results.values = arrayListFilter;
-
                 }
+                FilterResults results = new FilterResults();
+                results.values = filteredList;
                 return results;
+
             }
 
             @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                arrayListFiltered = (ArrayList<Todo>) results.values;
+            protected void publishResults(CharSequence constraint, @NotNull FilterResults results) {
+                /*arrayListFiltered = (ArrayList<Todo>) results.values;
                 notifyDataSetChanged();
 
                 if(arrayListFiltered.size() == 0) {
-                    //Toast.makeText(context, "Not Found", Toast.LENGTH_LONG).show();
-                }
+                   // Toast.makeText(context, "Not Found", Toast.LENGTH_LONG).show();
+                }*/
+
+                arrayListFiltered.clear();
+                arrayListFiltered.addAll((List) results.values);
+                notifyDataSetChanged();
 
             }
         };
-        return filter;
     }
-}
 
 

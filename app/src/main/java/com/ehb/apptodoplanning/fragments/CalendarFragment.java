@@ -25,15 +25,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class CalendarFragment extends Fragment {
 
     CalendarView cal;
     TextView myDate;
-    String date;
+    String pickedDate;
     CalendarTodoAdapter calAdapter;
-
+    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
     /*private ArrayList<Todo> items;*/
 
     public CalendarFragment() {
@@ -68,7 +67,7 @@ public class CalendarFragment extends Fragment {
                     calAdapter.addCalTodos( (ArrayList<Todo>) todos );
 
                     Date currentTime = Calendar.getInstance().getTime();
-                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+
                     String formattedDate = df.format(currentTime);
 
                     //calAdapter.getFilter().filter( formattedDate );
@@ -84,9 +83,18 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 int curentMonth = month + 1 ;
-                date = dayOfMonth+"-"+curentMonth+"-"+year;
+                pickedDate = dayOfMonth+"-"+curentMonth+"-"+year;
                 //  myDate.setText( dayOfMonth + "-" + curentMonth + "-" + year );
-                calAdapter.getFilter().filter( date );
+
+                Date newDate= null;
+                try {
+                    newDate = df.parse(pickedDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                pickedDate = df.format( newDate );
+
+                calAdapter.getFilter().filter( pickedDate );
                 //waarde terug gebruiken
             }
         });
