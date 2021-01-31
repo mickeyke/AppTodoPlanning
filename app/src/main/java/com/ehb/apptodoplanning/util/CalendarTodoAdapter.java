@@ -1,7 +1,10 @@
 package com.ehb.apptodoplanning.util;
 
 import android.content.Context;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,29 +12,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.navigation.Navigation;
 
 import com.ehb.apptodoplanning.R;
 import com.ehb.apptodoplanning.model.entities.Todo;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CalendarTodoAdapter extends RecyclerView.Adapter<CalendarTodoAdapter.CalenderViewHolder> implements Filterable {
 
     private FragmentActivity activity;
 
+
     public CalendarTodoAdapter(FragmentActivity activity) {
         this.tasks = new ArrayList<>();
         this.activity = activity;
-        this.arrayListFiltered = new ArrayList<>();
+        this.arrayListFiltered = tasks;
     }
 
     public void addCalTodos(ArrayList<Todo> todos) {
         tasks = todos;
-        arrayListFiltered = todos;
+        //arrayListFiltered = tasks;
         notifyDataSetChanged();
     }
 
@@ -40,14 +50,29 @@ public class CalendarTodoAdapter extends RecyclerView.Adapter<CalendarTodoAdapte
     class CalenderViewHolder extends RecyclerView.ViewHolder {
         final TextView tvTitle;
         final TextView tvDescription;
-        //final TextView tvStartdate;
+        final ImageButton btnDestails;
 
         public CalenderViewHolder(@NonNull View itemView) {
             super( itemView );
             tvTitle = itemView.findViewById( R.id.cardCal_Title );
             tvDescription = itemView.findViewById( R.id.cardCal_description );
-            //tvStartdate = itemView.findViewById( R.id.cardCal_startDate );
+            btnDestails =  itemView.findViewById(R.id.bt_calmoreInfo);
+            btnDestails.setOnClickListener(detailsListener);
         }
+
+        private View.OnClickListener detailsListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = getAdapterPosition();
+                Todo toPass = arrayListFiltered.get(pos);
+
+                Bundle data = new Bundle();
+                data.putSerializable("passedTodo", toPass);
+
+                Navigation.findNavController(itemView).navigate(R.id.action_calendarFragment_to_addItemFragment, data);
+            }
+        };
+
     }
 
     //ergens data nodig een array list met tasks
@@ -82,8 +107,8 @@ public class CalendarTodoAdapter extends RecyclerView.Adapter<CalendarTodoAdapte
     @Override
     public int getItemCount() {
         //hoeveel items moeten er zichtbaar zetten
-        return tasks.size();
-        //return arrayListFiltered.size();
+        //return tasks.size();
+        return arrayListFiltered.size();
     }
 
     @Override
@@ -92,6 +117,7 @@ public class CalendarTodoAdapter extends RecyclerView.Adapter<CalendarTodoAdapte
     }
     private Filter exampleFilter = new Filter() {
 
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @NotNull
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
@@ -101,10 +127,22 @@ public class CalendarTodoAdapter extends RecyclerView.Adapter<CalendarTodoAdapte
                     filteredList.addAll(tasks);
                 } else {
 
-                    String filterPattern = constraint.toString().toLowerCase().trim();
-
+                    String stringFilterPattern = constraint.toString().toLowerCase().trim();
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
                     for ( Todo item : tasks) {
-                        if (item.getStartDate().toLowerCase().contains(filterPattern)) {
+
+                        Date minDate = null;
+                        Date  maxDate = null;
+                        Date filterPattern = null;
+                        try {
+                            minDate = formatter.parse(item.getStartDate()  );
+                            maxDate = formatter.parse( item.getEndDate());
+                            filterPattern = formatter.parse( (String) constraint );
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (!filterPattern.before( minDate) && !filterPattern.after(maxDate)  ) {
                             filteredList.add(item);
                         }
                     }
@@ -117,12 +155,6 @@ public class CalendarTodoAdapter extends RecyclerView.Adapter<CalendarTodoAdapte
 
             @Override
             protected void publishResults(CharSequence constraint, @NotNull FilterResults results) {
-                /*arrayListFiltered = (ArrayList<Todo>) results.values;
-                notifyDataSetChanged();
-
-                if(arrayListFiltered.size() == 0) {
-                   // Toast.makeText(context, "Not Found", Toast.LENGTH_LONG).show();
-                }*/
 
                 arrayListFiltered.clear();
                 arrayListFiltered.addAll((List) results.values);

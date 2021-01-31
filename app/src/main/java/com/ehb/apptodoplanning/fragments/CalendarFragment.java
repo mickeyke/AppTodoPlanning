@@ -33,7 +33,7 @@ public class CalendarFragment extends Fragment {
     String pickedDate;
     CalendarTodoAdapter calAdapter;
     SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-    /*private ArrayList<Todo> items;*/
+
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -70,7 +70,7 @@ public class CalendarFragment extends Fragment {
 
                     String formattedDate = df.format(currentTime);
 
-                    //calAdapter.getFilter().filter( formattedDate );
+                    calAdapter.getFilter().filter( formattedDate );
                 }
             } );
         } catch (ParseException e) {

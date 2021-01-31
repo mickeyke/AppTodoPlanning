@@ -2,6 +2,7 @@ package com.ehb.apptodoplanning.util;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.navigation.Navigation;
 
 import com.ehb.apptodoplanning.R;
 import com.ehb.apptodoplanning.model.TodoViewModel;
@@ -24,7 +28,8 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
     class TodoViewHolder extends RecyclerView.ViewHolder {
         final TextView tvTitle,tvStartDate,tvEndDate;
         final TextView tvDescription;
-        final Button btnDelete;
+        final Button btnDelete ;
+        final ImageButton btnDestails;
 
         //final Button btnDestails;
 
@@ -36,7 +41,9 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
             tvEndDate = itemView.findViewById( R.id.card_tx_enddate );
             btnDelete = itemView.findViewById( R.id.bt_delete );
             btnDelete.setOnClickListener( deleteListener );
-            //btnDestails =  itemView.findViewById(R.id.card_bt_details);
+            btnDestails =  itemView.findViewById(R.id.bt_moreInfo);
+            btnDestails.setOnClickListener(detailsListener);
+
         }
 
         private View.OnClickListener deleteListener = new View.OnClickListener() {
@@ -48,6 +55,18 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
                 TodoViewModel model = ViewModelProviders.of(activity).get(TodoViewModel.class);
                 model.deleteTodo(toDelete);
                 notifyDataSetChanged();
+            }
+        };
+        private View.OnClickListener detailsListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = getAdapterPosition();
+                Todo toPass = Allitems.get(pos);
+
+                Bundle data = new Bundle();
+                data.putSerializable("passedTodo", toPass);
+
+               Navigation.findNavController(itemView).navigate(R.id.action_listFragment_to_addItemFragment, data);
             }
         };
     }
@@ -86,7 +105,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
         holder.tvStartDate.setText( currentTask.getStartDate() );
 
         //localdate geef problemen ik heb daarom alles in string geplaatst
-        holder.tvEndDate.setText( currentTask.getDateCreated());
+        holder.tvEndDate.setText( currentTask.getEndDate());
     }
 
     @Override

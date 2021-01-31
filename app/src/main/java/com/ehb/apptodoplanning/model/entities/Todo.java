@@ -18,6 +18,7 @@ public class Todo implements Serializable {
     private long id;
     private String title, description,createdBy,startDate,endDate,dateCreated;
 
+
     //localdate trouble waarschijnlijk omdat het een string array is.
     /*private LocalDate  dateCreated;
     private LocalDate endDate;*/

@@ -2,6 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_todoList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
@@ -57,24 +58,22 @@
             android:id="@+id/card_tx_startdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@+id/card_tx_description"
-            app:layout_constraintTop_toBottomOf="@+id/card_tx_description"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
             tools:text="21-02-2021" />
 
         <TextView
             android:id="@+id/card_tx_enddate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="65dp"
+            android:layout_marginLeft="65dp"
             app:layout_constraintStart_toEndOf="@+id/card_tx_startdate"
-            app:layout_constraintTop_toBottomOf="@+id/card_tx_description"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
             tools:text="24-02-2021" />
 
         <ImageButton
-            android:id="@+id/bt_calmoreInfo"
+            android:id="@+id/bt_moreInfo"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="16dp"
@@ -103,6 +102,30 @@
             android:background="@android:drawable/ic_delete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_startDate"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/bt_moreInfo"
+            app:layout_constraintTop_toBottomOf="@+id/card_tx_description" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="75dp"
+            android:layout_marginLeft="75dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_endDate"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/card_tx_description" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

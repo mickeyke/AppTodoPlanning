@@ -99,7 +99,9 @@
             android:autofillHints="Start date"
             android:ems="10"
             app:layout_constraintStart_toEndOf="@+id/txt_startDate"
-            tools:ignore="LabelFor,MissingConstraints" />
+            tools:ignore="LabelFor,MissingConstraints"
+            android:focusableInTouchMode="false"
+            android:windowSoftInputMode="stateHidden"/>
 
         <TextView
             android:id="@+id/txt_endDate"
@@ -109,6 +111,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="36dp"
             android:text="@string/txt_endDate"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_startDate" />
 
@@ -122,7 +125,9 @@
             android:inputType="date"
             app:layout_constraintStart_toStartOf="@+id/editStartDate"
             app:layout_constraintTop_toBottomOf="@+id/editStartDate"
-            tools:ignore="LabelFor,MissingConstraints" />
+            tools:ignore="LabelFor,MissingConstraints"
+            android:focusableInTouchMode="false"
+            android:windowSoftInputMode="stateHidden"/>
 
         <Button
             android:id="@+id/bt_saveTasks"

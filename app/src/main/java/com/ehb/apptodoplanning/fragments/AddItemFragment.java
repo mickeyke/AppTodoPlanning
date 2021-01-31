@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -76,8 +75,8 @@ public class AddItemFragment extends Fragment {
         etCreatedBy= rootView.findViewById(R.id.edit_createdBy);
         etStartDate= rootView.findViewById(R.id.editStartDate);
         etEndDate= rootView.findViewById(R.id.editEndDate);
-        etStartDate.setInputType( EditorInfo.TYPE_NULL);
-        etEndDate.setInputType( EditorInfo.TYPE_NULL);
+        //etStartDate.setInputType( EditorInfo.TYPE_NULL);
+        //etEndDate.setInputType( EditorInfo.TYPE_NULL);
         //hier nog verder aanvullen
 
         if(selected != null){
@@ -85,8 +84,8 @@ public class AddItemFragment extends Fragment {
             etTitle.setText(selected.getTitle());
             etContent.setText(selected.getDescription());
             etCreatedBy.setText( selected.getCreatedBy() );
-            etEndDate.setText( selected.getEndDate().toString());
-            etStartDate.setText( selected.getStartDate().toString() );
+            etEndDate.setText( selected.getEndDate());
+            etStartDate.setText( selected.getStartDate());
             //hier nog verder aanvullen
         }
 
@@ -135,6 +134,7 @@ public class AddItemFragment extends Fragment {
                     selected.setTitle(etTitle.getText().toString());
                     selected.setDescription(etContent.getText().toString());
                     selected.setCreatedBy( etCreatedBy.getText().toString() );
+                    selected.setStartDate( etStartDate.getText().toString());
                     selected.setEndDate( etEndDate.getText().toString());
                     model.updateTodo(selected);
                 }
@@ -154,11 +154,10 @@ public class AddItemFragment extends Fragment {
                 SimpleDateFormat sd = new SimpleDateFormat("dd-MM-yyyy");
                 final Date startDate = newDate.getTime();
                 String fdate = sd.format(startDate);
-
                 clickedEditText.setText(fdate);
 
             }
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-        mDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()+1000);
+       // mDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()+1000);
     }
 }
